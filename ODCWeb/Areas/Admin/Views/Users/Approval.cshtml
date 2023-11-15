@@ -1,0 +1,13 @@
+﻿@using ODCWeb.Models
+@model ODCWeb.Models.ApplicationUser
+
+@if (Model.Approved == true)
+{
+    <h1>@Model.Name has been approved. </h1>
+}
+else
+{
+    <h1>@Model.Name has been Disapproved. </h1>
+}
+
+<a class="btn btn-primary" asp-area="Admin" asp-controller="Users" asp-action="Index">Ok</a>

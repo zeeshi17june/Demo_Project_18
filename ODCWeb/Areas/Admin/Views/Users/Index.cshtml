@@ -1,0 +1,50 @@
+﻿
+@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "All Users";
+}
+
+@if (Model.Any())
+{
+    <div class="container mt-4 bg-light rounded">
+        @* <div class="container m-3 p-3">
+
+            <a class="btn btn-primary float-end mx-2" asp-controller="Product" asp-action="Upsert">Create Product</a>
+        </div> *@
+        <h1>Users List</h1>
+        <div class="">
+            <table id="myTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>City</th>
+                        <th>Role</th>
+                        <th>Approved?</th>
+                    </tr>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.Name</td>
+                            <td>@user.City</td>
+                            <td>@user.RoleId</td>
+                            <td>@user.Approved
+                                @if (user.Approved == false)
+                                {
+                                    <a class="btn btn-primary" asp-area="Admin" asp-controller="Users" asp-action="Approval" asp-route-id="@user.Id">Approve</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-primary" asp-area="Admin" asp-controller="Users" asp-action="Approval" asp-route-id="@user.Id">Disapprove</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </thead>
+                
+
+            </table>
+        </div>
+    </div>
+
+}
