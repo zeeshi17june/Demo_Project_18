@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ODCWeb.DataAccess.Data;
 using ODCWeb.Models;
 using System.Security.Claims;
-using ODCWeb.Models.ViewModels;
+
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Collections.Immutable;
+using ODCWeb.Utility;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace ODCWeb.Areas.Admin.Controllers
 {
@@ -58,15 +62,41 @@ namespace ODCWeb.Areas.Admin.Controllers
                 _db.Update(userFromDb);
                 _db.SaveChanges();
 /*                string RoleIdd = _db.UserRoles.Where(a => a.UserId == id).ToString();*/
-                System.Diagnostics.Debug.WriteLine("First will be displayed in output window");
-                System.Diagnostics.Debug.WriteLine(_db.UserRoles.Where(a => a.UserId == id));
-                /*string RoleNamee = _db.Roles.Find(RoleIdd).Name.ToString();*/
-                System.Diagnostics.Debug.WriteLine("Second will be displayed in output window");
                 return View(userFromDb);
             }
 
         }
-        
+
+        public async Task<IActionResult> RoleChange(string? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ApplicationUser userFromDbb = await userManager.FindByIdAsync(id);
+                if (userFromDbb.RoleName == SD.Role_Customer)
+                {
+                    userFromDbb.RoleName = SD.Role_Employee;
+                    userFromDbb.RoleId = roleManager.Roles.FirstOrDefault(c => c.Name == SD.Role_Employee).Id;
+                    _db.ChangeTracker.Clear();
+                    await userManager.AddToRoleAsync(userFromDbb, SD.Role_Employee);
+                    await userManager.RemoveFromRoleAsync(userFromDbb, SD.Role_Customer);
+                }
+                else
+                {
+                    userFromDbb.RoleName = SD.Role_Customer;
+                    userFromDbb.RoleId = roleManager.Roles.FirstOrDefault(c => c.Name == SD.Role_Customer).Id;
+                    await userManager.AddToRoleAsync(userFromDbb, SD.Role_Customer);
+                    await userManager.RemoveFromRoleAsync(userFromDbb, SD.Role_Employee);
+                }
+
+                return View(userFromDbb);
+            }
+
+        }
+
 
 
 

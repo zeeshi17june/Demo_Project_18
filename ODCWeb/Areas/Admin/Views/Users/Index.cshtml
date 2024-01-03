@@ -1,4 +1,7 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@using ODCWeb.Utility
+@inject UserManager<ApplicationUser> UserManager
+
 @model IEnumerable<ApplicationUser>
 
 @{
@@ -27,15 +30,30 @@
                         <tr>
                             <td>@user.Name</td>
                             <td>@user.City</td>
-                            <td>@user.RoleId</td>
-                            <td>@user.Approved
-                                @if (user.Approved == false)
+                            <td>@user.RoleName
+                                @if (UserManager.GetUserId(User) != user.Id)
                                 {
-                                    <a class="btn btn-primary" asp-area="Admin" asp-controller="Users" asp-action="Approval" asp-route-id="@user.Id">Approve</a>
+                                    @if (user.RoleName == SD.Role_Customer)
+                                    {
+                                        <a class="btn btn-success" asp-area="Admin" asp-controller="Users" asp-action="RoleChange" asp-route-id="@user.Id">Promote</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-danger" asp-area="Admin" asp-controller="Users" asp-action="RoleChange" asp-route-id="@user.Id">Demote</a>
+                                    }
                                 }
-                                else
+                            </td>
+                            <td>@user.Approved
+                                @if (UserManager.GetUserId(User) != user.Id)
                                 {
-                                    <a class="btn btn-primary" asp-area="Admin" asp-controller="Users" asp-action="Approval" asp-route-id="@user.Id">Disapprove</a>
+                                    @if (user.Approved == false)
+                                    {
+                                        <a class="btn btn-success" asp-area="Admin" asp-controller="Users" asp-action="Approval" asp-route-id="@user.Id">Approve</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-danger" asp-area="Admin" asp-controller="Users" asp-action="Approval" asp-route-id="@user.Id">Disapprove</a>
+                                    }
                                 }
                             </td>
                         </tr>

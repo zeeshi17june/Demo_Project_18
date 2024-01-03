@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ODCWeb.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using ODCWeb.DataAccess.Data;
 namespace ODCWeb.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231216164636_16_dec_123")]
+    partial class _16_dec_123
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,11 +253,11 @@ namespace ODCWeb.DataAccess.Migrations
 
             modelBuilder.Entity("ODCWeb.Models.Floor", b =>
                 {
-                    b.Property<int>("FloorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FloorId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -263,7 +266,7 @@ namespace ODCWeb.DataAccess.Migrations
                     b.Property<int>("ODCProjectId")
                         .HasColumnType("int");
 
-                    b.HasKey("FloorId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ODCProjectId");
 

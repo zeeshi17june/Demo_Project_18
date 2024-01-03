@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ODCWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace ODCWeb.DataAccess.Repository.IRepository
 {
-    public interface IUnitOfWork
+    public interface IFloorRepository : IRepository<Floor>
     {
-        IProjectRepository ODCProject { get; }
-        IFloorRepository Floor { get; }
-        void save();
+        void update(Floor obj);
     }
 }

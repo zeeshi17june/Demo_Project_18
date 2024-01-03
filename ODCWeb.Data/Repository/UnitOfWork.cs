@@ -13,10 +13,14 @@ namespace ODCWeb.DataAccess.Repository
         private ApplicationDbContext _db;
 
         public IProjectRepository ODCProject { get; private set; }
+        public IFloorRepository Floor { get; private set; }
+
+
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             ODCProject = new ProjectRepository(_db);
+            Floor = new FloorRepository(_db);
         }
         public void save()
         {

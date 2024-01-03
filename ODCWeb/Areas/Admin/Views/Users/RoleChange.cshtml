@@ -1,0 +1,14 @@
+﻿@using ODCWeb.Models
+@model ODCWeb.Models.ApplicationUser
+@using ODCWeb.Utility
+
+@if (Model.RoleName == SD.Role_Customer)
+{
+    <h1>@Model.Name has been demoted. </h1>
+}
+else
+{
+    <h1>@Model.Name has been promoted. </h1>
+}
+
+<a class="btn btn-primary" asp-area="Admin" asp-controller="Users" asp-action="Index">Ok</a>

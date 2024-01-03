@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using ODCWeb.DataAccess.Data;
 using ODCWeb.Models;
 using ODCWeb.Utility;
 
@@ -33,7 +34,7 @@ namespace ODCWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-
+        private readonly ApplicationDbContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
         
 
@@ -44,7 +45,8 @@ namespace ODCWeb.Areas.Identity.Pages.Account
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             RoleManager<IdentityRole> roleManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext applicationDbContext)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -53,6 +55,7 @@ namespace ODCWeb.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _db = applicationDbContext;
         }
 
         /// <summary>
@@ -149,10 +152,24 @@ namespace ODCWeb.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.City = Input.City;
+                user.Name = Input.Name;
+
+                user.RoleName = SD.Role_Customer;
+                user.RoleId = _roleManager.Roles.FirstOrDefault(c => c.Name == SD.Role_Customer).Id;
+                user.SubscriptionStatus = true;
+                user.ExpiryDate = DateTime.Today.AddDays(30);
+                user.SubscriptionDaysLeft = ((int)(user.ExpiryDate - DateTime.Today).TotalDays);
+                /*foreach (ApplicationUser person in _userManager.Users)
+                {
+                    person.ExpiryDate = DateTime.Today.AddDays(30);
+                    person.SubscriptionDaysLeft = ((int)(person.ExpiryDate - DateTime.Today).TotalDays);
+                }*/
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
+
                     _logger.LogInformation("User created a new account with password.");
 
                     /*if (!String.IsNullOrEmpty(Input.Role))
@@ -163,8 +180,7 @@ namespace ODCWeb.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_Customer);    //this will be used only in actual projects
                     }*/
-
-                    
+                    await _userManager.AddToRoleAsync(user, SD.Role_Customer);
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

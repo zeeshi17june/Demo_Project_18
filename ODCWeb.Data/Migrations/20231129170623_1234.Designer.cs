@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ODCWeb.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using ODCWeb.DataAccess.Data;
 namespace ODCWeb.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231129170623_1234")]
+    partial class _1234
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,14 +263,51 @@ namespace ODCWeb.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ODCProjectId")
-                        .HasColumnType("int");
-
                     b.HasKey("FloorId");
 
-                    b.HasIndex("ODCProjectId");
-
                     b.ToTable("Floors");
+
+                    b.HasData(
+                        new
+                        {
+                            FloorId = 1,
+                            Name = "Basement"
+                        },
+                        new
+                        {
+                            FloorId = 2,
+                            Name = "First Floor"
+                        },
+                        new
+                        {
+                            FloorId = 3,
+                            Name = "Second Floor"
+                        },
+                        new
+                        {
+                            FloorId = 4,
+                            Name = "Third Floor"
+                        },
+                        new
+                        {
+                            FloorId = 5,
+                            Name = "Forth Floor"
+                        },
+                        new
+                        {
+                            FloorId = 6,
+                            Name = "Fifth Floor"
+                        },
+                        new
+                        {
+                            FloorId = 7,
+                            Name = "Sixth Floor"
+                        },
+                        new
+                        {
+                            FloorId = 8,
+                            Name = "Eighth Floor"
+                        });
                 });
 
             modelBuilder.Entity("ODCWeb.Models.ODCProject", b =>
@@ -354,17 +394,6 @@ namespace ODCWeb.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ODCWeb.Models.Floor", b =>
-                {
-                    b.HasOne("ODCWeb.Models.ODCProject", "ODCProject")
-                        .WithMany("FloorIds")
-                        .HasForeignKey("ODCProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ODCProject");
-                });
-
             modelBuilder.Entity("ODCWeb.Models.ODCProject", b =>
                 {
                     b.HasOne("ODCWeb.Models.ApplicationUser", "User")
@@ -374,11 +403,6 @@ namespace ODCWeb.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ODCWeb.Models.ODCProject", b =>
-                {
-                    b.Navigation("FloorIds");
                 });
 #pragma warning restore 612, 618
         }

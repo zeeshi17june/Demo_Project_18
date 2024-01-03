@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Staff\Controllers\" />
     <Folder Include="Views\Shared\Components\" />
   </ItemGroup>
 

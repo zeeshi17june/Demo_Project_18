@@ -1,0 +1,40 @@
+﻿
+@model Floor
+
+
+<form method="post">
+
+
+    <div class="mb-3">
+        <label asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="ODCProjectId"></label>
+        <input class="form-control" asp-for="ODCProjectId" value="@ViewBag.ProjectID" />
+      
+    </div>
+    <div class="mb-3">
+        <label asp-for="ODCProject"></label>
+        <input class="form-control" asp-for="ODCProject" value="@ViewBag.model1" />
+    
+    </div>
+
+
+
+
+
+    <div class="mb-2  row">
+        <div class="col-6">
+            <button class="btn btn-primary form-control" type="submit">"Create"</button>
+        </div>
+        <div class="col-6">
+            <a class="btn btn-secondary form-control" asp-area="Staff" asp-controller="ODCProject" asp-action="Index">Back to List</a>
+        </div>
+        <div class="text-danger" asp-validation-summary="All"></div>
+    </div>
+</form>
+
+@{
+    <partial name="_ValidationScriptsPartial" />
+}

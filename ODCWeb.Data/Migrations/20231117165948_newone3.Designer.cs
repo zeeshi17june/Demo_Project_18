@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ODCWeb.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using ODCWeb.DataAccess.Data;
 namespace ODCWeb.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231117165948_newone3")]
+    partial class newone3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,9 +184,6 @@ namespace ODCWeb.DataAccess.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -222,12 +222,6 @@ namespace ODCWeb.DataAccess.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubscriptionDaysLeft")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("SubscriptionStatus")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -246,28 +240,6 @@ namespace ODCWeb.DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("ODCWeb.Models.Floor", b =>
-                {
-                    b.Property<int>("FloorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FloorId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ODCProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FloorId");
-
-                    b.HasIndex("ODCProjectId");
-
-                    b.ToTable("Floors");
                 });
 
             modelBuilder.Entity("ODCWeb.Models.ODCProject", b =>
@@ -354,17 +326,6 @@ namespace ODCWeb.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ODCWeb.Models.Floor", b =>
-                {
-                    b.HasOne("ODCWeb.Models.ODCProject", "ODCProject")
-                        .WithMany("FloorIds")
-                        .HasForeignKey("ODCProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ODCProject");
-                });
-
             modelBuilder.Entity("ODCWeb.Models.ODCProject", b =>
                 {
                     b.HasOne("ODCWeb.Models.ApplicationUser", "User")
@@ -374,11 +335,6 @@ namespace ODCWeb.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ODCWeb.Models.ODCProject", b =>
-                {
-                    b.Navigation("FloorIds");
                 });
 #pragma warning restore 612, 618
         }

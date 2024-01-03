@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,11 @@ namespace ODCWeb.Models
         public string City { get; set; }
         [DefaultValue(false)]
         public bool Approved {  get; set; }
+        [AllowNull]
         public string RoleId { get; set; }
         public string RoleName { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public int SubscriptionDaysLeft { get; set; }
+        public bool SubscriptionStatus { get; set; }
     }
 }
